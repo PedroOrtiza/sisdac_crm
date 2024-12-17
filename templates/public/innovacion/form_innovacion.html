@@ -1,0 +1,286 @@
+{% extends 'public/base_cpanel.html' %}
+<!-- Cambiando el título -->
+
+{% block customCSS %}
+<!-- Font Awesome -->
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Bootstrap 3 CSS -->
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+
+<!-- Bootstrap Select CSS -->
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+
+<!-- Tu CSS personalizado -->
+<link rel="stylesheet"
+  href="{{ url_for('static', filename='assets/css/file.css') }}" />
+
+<style>
+  /* Estilos para resaltar campos con errores */
+  .has-error .form-control {
+    border-color: #a94442;
+  }
+
+  .has-error .form-label {
+    color: #a94442;
+  }
+</style>
+
+{% endblock %}
+
+<!-- Inicio del bloque body -->
+{% block body %}
+<div class="container">
+  <div class="card"
+    style="padding: 20px; margin-top: 20px;">
+    <div class="row justify-content-center mb-2 header sticky-header">
+      <div class="col-md-12">
+        <h3 class="text-center mt-5 mb-3 fw-bold">REGISTRO PROYECTOS DE INNOVACIÓN DIGITAL</h3>
+        <hr />
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <form id="multi-step-form" method="post" action="/registrar-innovacion" enctype="multipart/form-data">
+      <!-- Pestañas de navegación -->
+      <ul class="nav nav-tabs" id="formTabs">
+        <li class="active"><a href="#step-1" data-toggle="tab">Resumen</a></li>
+        <li><a href="#step-2" data-toggle="tab">Proyecto</a></li>
+        <li><a href="#step-3" data-toggle="tab">Evaluación</a></li>
+      </ul>
+
+      <!-- Contenido de las pestañas -->
+      <div class="tab-content">
+        <!-- Paso 1 -->
+        <div class="tab-pane fade in active" id="step-1">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                <label for="titulo" class="form-label fw-bold text-primary">Nombre del proyecto: <span class="text-danger">*</span>
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Asigne un nombre asociado al objetivo del proyecto de ID"></i>
+                </label>
+                <input class="form-control" type="text" name="titulo" id="titulo" required />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="date_inicio" class="form-label fw-bold text-primary">Fecha de Inicio: <span class="text-danger">*</span>
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Seleccion la fecha en la cual se inicia el proyecto"></i>
+                </label>
+                <input class="form-control" type="date" name="date_inicio" required />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="idea" class="form-label fw-bold text-primary">Resumen del proyecto: <span class="text-danger">*</span>
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Resuma brevemente el proyecto de ID"></i>
+                </label>
+                <textarea class="form-control" name="idea" rows="2" required></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="problema" class="form-label fw-bold text-primary">Contexto del negocio:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Relacione de la emoresa su situación actual, capacidades, limitaciones y sus relaciones con los objetivos estratégicos"></i>
+                </label>
+                <textarea class="form-control" name="problema" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="afecta" class="form-label fw-bold text-primary">Entorno competitivo:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Relacione el mercado en que opera la empresa, identifique los competidores, sus fortalezas, debilidades y tendencias del sector"></i>
+                </label>
+                <textarea class="form-control" name="afecta" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="tab-pane fade" id="step-2">
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="definir_role" class="form-label fw-bold text-primary">1. Definir roles del equipo de trabajo:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Establezca claramente las personas y sus reponsabilidades, frente al actual proyecto de innovaciòn digital, ejm. Líder de proyecto, desarrollador, responsable funcional"></i>
+                </label>
+                <textarea class="form-control" name="definir_role" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="kim" class="form-label fw-bold text-primary">
+                  2. Seleccione la estrategia de la matriz del conocimiento (KIM):
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top"
+                      title="Escoja la categoría según impacto y novedad en el contexto de la empresa, Invención, Mejora, Exaptación o Explotación"></i>
+                </label>
+                <select class="form-control" name="kim" id="kim">
+                  <option value="">Seleccione una opción</option>
+                  {% for kim_option in kim_options %}
+                    <option value="{{ kim_option['id_kim'] }}">{{ kim_option['nombre_kim'] }} - {{ kim_option['descripcion_kim'] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="diseno" class="form-label fw-bold text-primary">3. Diseño del proyecto de innovación digital:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Describa la solución, sí es de desarrolo diseñe la arquitectura, formularios, etc."></i>
+                </label>
+                <textarea class="form-control" name="diseno" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <br />
+              <div class="form-group">
+                <label for="date_implementacion" class="form-label fw-bold text-primary">Fecha plazo de implementación:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Establezca un plazo para la implementación"></i>
+                </label>
+                <input class="form-control" type="date" name="date_implementacion" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="implementacion" class="form-label fw-bold text-primary">4. Implementación y demostración:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Relacione las preubas funcinales, como se realizarán, configuración del entorno y detalle cómo realizará la capacitación a los usuarios"></i>
+                </label>
+                <textarea class="form-control" name="implementacion" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="tab-pane fade" id="step-3">
+          <div class="row">
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="evaluacion" class="form-label fw-bold text-primary">5. Resultados de la encuesta de aceptación:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Aplique la encuesta de aceptación y describa los resultados"></i>
+                </label>
+                <textarea class="form-control" name="evaluacion" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="diseñar" class="form-label fw-bold text-primary">6. Planear nuevos proyectos de innovación digital:
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="De acuerdo con los resultados de la encuesta, extraiga el conocimiento, para tener en cuenta en los futuros proyectos"></i>
+                </label>
+                <textarea class="form-control" name="diseñar" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <br />
+              <div class="form-group">
+                <label for="ajustes" class="form-label fw-bold text-primary">Base de conocimiento (ajustes necesarios):
+                  <i class="fas fa-question-circle ms-2" data-toggle="tooltip" data-placement="top" title="Detalle los conocimientos, experiencias y experticias adquiridas durante la realización del proyecto"></i>
+                </label>
+                <textarea class="form-control" name="ajustes" rows="2"></textarea>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Guardar -->
+      <div class="form-group text-center" style="margin-top: 20px;">
+        <button type="submit" class="btn btn-primary btn-custom">Guardar registro ahora</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block customJS %}
+<!-- jQuery -->
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap 3 JS -->
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- Bootstrap Select JS -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+  var currentStep = 1;
+  var totalSteps = 3;
+
+  function updateStep() {
+    $('.nav-tabs li').removeClass('active');
+    $('.nav-tabs li').eq(currentStep - 1).addClass('active');
+    $('.tab-pane').removeClass('in active');
+    $('#step-' + currentStep).addClass('in active');
+    // Scroll hacia arriba al cambiar de pestaña
+    $('html, body').animate({
+      scrollTop: $(".header").offset().top
+    }, 500);
+  }
+
+  $(document).ready(function () {
+    // Inicializa los tooltips de Bootstrap 3
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Manejo de las pestañas con Bootstrap 3
+    $('.nav-tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+      // Actualiza currentStep
+      currentStep = $(this).parent().index() + 1;
+      // Scroll hacia arriba al cambiar de pestaña
+      $('html, body').animate({
+        scrollTop: $(".header").offset().top
+      }, 500);
+    });
+
+    // Validación del formulario
+    $('#multi-step-form').on('submit', function (event) {
+      var isValid = true;
+      var firstInvalidStep = null;
+
+      // Verificar campos obligatorios en cada paso
+      for (var step = 1; step <= totalSteps; step++) {
+        $('#step-' + step + ' input[required], #step-' + step + ' textarea[required], #step-' + step + ' select[required]').each(function () {
+          if (!$(this).val()) {
+            isValid = false;
+            $(this).closest('.form-group').addClass('has-error');
+            if (firstInvalidStep === null) {
+              firstInvalidStep = step;
+            }
+          } else {
+            $(this).closest('.form-group').removeClass('has-error');
+          }
+        });
+      }
+
+      // Si el formulario no es válido, evitar el envío y mostrar errores
+      if (!isValid) {
+        event.preventDefault();
+        alert('Por favor, completa los campos obligatorios.');
+
+        // Cambiar a la pestaña del primer error
+        if (firstInvalidStep) {
+          currentStep = firstInvalidStep;
+          updateStep();
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
+
